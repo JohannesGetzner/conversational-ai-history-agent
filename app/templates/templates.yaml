@@ -1,0 +1,5 @@
+# Yaml file with response templates for handler functions
+
+
+test_response:
+- This is a test response.
