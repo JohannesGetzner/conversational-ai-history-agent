@@ -1,0 +1,25 @@
+# Yaml file with response templates for handler functions
+
+
+test_response:
+- This is a test response.
+
+welcome:
+  - Hi, I'm a chatbot about history, and you can call me Jerry :)
+  
+    From me, you can query about the famous historical figures, including their names, sex, countries, domain, occupation and so on! By the way, we also have a ranking of these figures according to their online popularity (called historical popularity index).
+  
+    My history dataset contains totally 11341 historical figures. One example historical figure is Julius Caesar. He was a politician from Rome and was born in UC100,
+  
+    Want to know more historical figures? Just ask me! Have fun!
+
+summary:
+  - My history dataset contains information about 11341 historical figures,  including their names, sex, countries, domain, occupation, and so on! By the way, we also have a ranking of these figures according to their online popularity.
+    
+    One example historical figure is Julius Caesar. He was a politician from Rome and was born in UC100,
+
+
+hpi.intro:
+  - HPI is a metric that aggregates information on a biography’s online popularity. It aggregates information on the age and attention received by biographies in multiple language editions of Wikipedia to provide a summary statistic of their global popularity.
+    
+    For example, the most online popular historical figure in our dataset is Stageira who was a philosopher from Greece and his HPI is 31.9938.

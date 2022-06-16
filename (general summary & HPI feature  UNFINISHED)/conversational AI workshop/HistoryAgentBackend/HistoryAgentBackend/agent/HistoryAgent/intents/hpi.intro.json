@@ -1,0 +1,39 @@
+{
+  "id": "d87b0550-3d2a-4f33-bdd8-f48cafaa5c2a",
+  "name": "hpi.intro",
+  "auto": true,
+  "contexts": [],
+  "responses": [
+    {
+      "resetContexts": false,
+      "action": "",
+      "affectedContexts": [],
+      "parameters": [
+        {
+          "id": "2eff77a3-5d23-435e-9cca-ba3ffc82ed56",
+          "name": "hpi",
+          "required": false,
+          "dataType": "@hpi",
+          "value": "$hpi",
+          "defaultValue": "",
+          "isList": false,
+          "prompts": [],
+          "promptMessages": [],
+          "noMatchPromptMessages": [],
+          "noInputPromptMessages": [],
+          "outputDialogContexts": []
+        }
+      ],
+      "messages": [],
+      "speech": []
+    }
+  ],
+  "priority": 500000,
+  "webhookUsed": false,
+  "webhookForSlotFilling": false,
+  "fallbackIntent": false,
+  "events": [],
+  "conditionalResponses": [],
+  "condition": "",
+  "conditionalFollowupEvents": []
+}
