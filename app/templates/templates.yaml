@@ -11,3 +11,8 @@ dataset.size:
 - The size of the dataset is  {{num_rows}} x {{num_columns}}.
 - The dataset is of size {{num_rows}} x {{num_columns}}.
 - The dataset contains {{num_rows}} observations with {{num_columns}} features.
+
+dataset.summary:
+- The dataset contains information about historical figures. Each person is described by multiple features such as {% for column in columns %} {{column}}{{ ", " if not loop.last else "" }} {% endfor %} . An example is {{example}}
+- The table contains data about historical figures. Here is a example{{ ":" }} {{example}}. Other attributes could be {% for column in columns %} {{column}}{{ ", " if not loop.last else "" }} {% endfor %}.
+

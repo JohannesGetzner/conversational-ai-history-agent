@@ -20,3 +20,6 @@ def dataset_size_handler(conv: V2beta1DialogflowConversation) -> V2beta1Dialogfl
     return handlers.retrieve_dataset_size(conv)
 
 
+@agent.handle(intent="dataset.summary")
+def dataset_summary_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    return handlers.construct_dataset_summary(conv)
