@@ -1,0 +1,9 @@
+{
+  "id": "c9ed589c-9d86-4e00-88d5-1faea0ef2ce3",
+  "name": "hpi",
+  "isOverridable": true,
+  "isEnum": false,
+  "isRegexp": false,
+  "automatedExpansion": false,
+  "allowFuzzyExtraction": true
+}

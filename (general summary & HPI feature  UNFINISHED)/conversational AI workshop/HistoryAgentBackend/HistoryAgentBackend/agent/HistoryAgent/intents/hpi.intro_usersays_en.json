@@ -1,0 +1,64 @@
+[
+  {
+    "id": "4ac136cb-5f3c-42ff-abca-04d422f746ff",
+    "data": [
+      {
+        "text": "How is HPI defined?",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "d5efed5f-8e86-4668-9d71-242b12445f9d",
+    "data": [
+      {
+        "text": "according to what metrics are the figures ranked?",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "3e3e1c9f-76a4-4e28-9a57-4f05758bc655",
+    "data": [
+      {
+        "text": "how are the figures ranked?",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  },
+  {
+    "id": "24e0129a-12f2-4554-b80c-d41361b575d9",
+    "data": [
+      {
+        "text": "What is ",
+        "userDefined": false
+      },
+      {
+        "text": "HPI",
+        "meta": "@hpi",
+        "alias": "hpi",
+        "userDefined": true
+      },
+      {
+        "text": "?",
+        "userDefined": false
+      }
+    ],
+    "isTemplate": false,
+    "count": 0,
+    "lang": "en",
+    "updated": 0
+  }
+]
