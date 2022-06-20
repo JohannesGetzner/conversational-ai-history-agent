@@ -21,3 +21,8 @@ address_search:
 
 domain_search:
 - Yes, {{name}} is a {{occupation}}.
+
+ask.person.info:
+- Can you tell me which person do you mean?
+- Can you tell me the full name of the person you mentioned?
+- Can you give me more information about the person you said?
