@@ -56,6 +56,7 @@ def domain_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConve
     occu = conv.parameters.get('occu')
     occu = occu.title()
     name, personIDs, occupation = controllers.get_ID_by_occu(occu)
+    conv.contexts.set('person_ctx', lifespan_count=6, name=name)
     print(conv)
 
     conv.ask(render_template("domain_search", name=name, occupation=occupation))
