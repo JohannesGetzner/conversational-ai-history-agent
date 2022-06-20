@@ -77,10 +77,8 @@ def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
     # find out whose birth year is asked, get person_id
     # get the person from the given parameters in last question.
     full_name = conv.parameters.get('person-full-name')
-    print(full_name)
+    # print(full_name)
     if len(full_name) > 0:
-        if conv.contexts.has('person'):
-            conv.contexts.delete('person')
         person_id = df.loc[df['full_name'] == full_name, 'person_id'].tolist()[0]
         conv.contexts.set('person', lifespan_count=5, person_id=person_id)
     else: # no recorded full_name is given
