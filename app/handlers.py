@@ -63,3 +63,48 @@ def domain_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConve
     conv.google.ask(render_template("domain_search", name=name, occupation=occupation))
 
     return conv
+
+def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    '''
+        Get the birth year of a historical figure.
+
+        1. find the person full name from the given user message
+        2. if not found, get person info from current context
+        3. if no context set, ask user to provide more information
+    '''
+    df = controllers.read_dataset()
+    
+    # find out whose birth year is asked, get person_id
+    # get the person from the given parameters in last question.
+    full_name = conv.parameters.get('person-full-name')
+    print(full_name)
+    if len(full_name) > 0:
+        if conv.contexts.has('person'):
+            conv.contexts.delete('person')
+        person_id = df.loc[df['full_name'] == full_name, 'person_id'].tolist()[0]
+        conv.contexts.set('person', lifespan_count=5, person_id=person_id)
+    else: # no recorded full_name is given
+        if conv.contexts.has('person'):
+            # check the current contexts to find if the person is fixed
+            ctx = conv.contexts.get('person')
+            person_id = ctx.parameters['person_id']
+        else: # fail to get any person info, ask users to get more inforation
+            conv.ask(render_template('ask.person.info'))
+            return conv
+
+    # response construction
+    sex = df.loc[df['person_id'] == person_id, 'sex'].tolist()[0]
+    birth_year = int(df.loc[df['person_id'] == person_id, 'birth_year'].tolist()[0])
+    response = ''
+    if sex == 'Male':
+        response += 'He '
+    else:
+        response += 'She '
+    response += 'was born in '
+    if birth_year < 0:
+        response += f'BCE {str(abs(birth_year))}.'
+    else:
+        response += f'{str(abs(birth_year))}.'
+    conv.tell(response)
+
+    return conv
