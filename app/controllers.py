@@ -32,29 +32,27 @@ def read_dataset() -> pd.DataFrame:
 
 
 def get_id_by_address(city, country, continent):
-
     if city != '':
         geo_feature = 'city'
     elif country != '':
         geo_feature = 'country'
     elif continent != '':
         geo_feature = 'continent'
+    else:
+        return None
+
     df = read_dataset()
     match = df[geo_feature] == eval(geo_feature)
-
     df = df[match]
     person = df.head(1)
 
     return person
 
 
-def get_ID_by_occu(occu):
+def get_id_by_occu(occu):
     df = read_dataset()
-    match = df['occupation'] == occu
-    df = df[match]
+    df = df.loc[df['occupation'] == occu]
     person = df.head(1)
     name = person.iloc[0]['full_name']
-    personIDs = person.iloc[0]['person_id']
     occupation = person.iloc[0]['occupation']
-
-    return name, personIDs, occupation
+    return name, occupation
