@@ -35,7 +35,7 @@ def dataset_features_handler(conv: V2beta1DialogflowConversation) -> V2beta1Dial
 
 
 @agent.handle(intent="features.historical_popularity_index")
-def dataset_summary_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+def dataset_hpi_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     conv.tell(
         "The historical popularity index (HPI) is a metric that aggregates information on popularity of the figures "
         "online biography. Parameters such as the number of views and the number of languages the article is available "

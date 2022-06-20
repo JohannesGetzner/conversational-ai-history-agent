@@ -42,7 +42,8 @@ def address_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConv
     if person:
         name = person.full_name.item()
         occupation = person.occupation.item()
-        conv.contexts.set('person_ctx', lifespan_count=6, name=name)
+        person_id = person.person_id.item()
+        conv.contexts.set('person_ctx', lifespan_count=6, person_id=person_id)
         conv.ask(render_template("address_search", name=name, occupation=occupation))
         conv.google.ask(render_template("address_search", name=name, occupation=occupation))
     else:
@@ -52,8 +53,8 @@ def address_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConv
 
 def domain_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     occu = conv.parameters.get('occu').title()
-    name, occupation = controllers.get_id_by_occu(occu)
-    conv.contexts.set('person_ctx', lifespan_count=6, name=name)
+    name, occupation, person_id = controllers.get_id_by_occu(occu)
+    conv.contexts.set('person_ctx', lifespan_count=6, person_id=person_id)
     print(conv)
 
     conv.ask(render_template("domain_search", name=name, occupation=occupation))
@@ -78,24 +79,20 @@ def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
     # print(full_name)
     if len(full_name) > 0:
         person_id = df.loc[df['full_name'] == full_name, 'person_id'].tolist()[0]
-        conv.contexts.set('person', lifespan_count=5, person_id=person_id)
+        conv.contexts.set('person_ctx', lifespan_count=5, person_id=person_id)
     else:  # no recorded full_name is given
-        if conv.contexts.has('person'):
+        if conv.contexts.has('person_ctx'):
             # check the current contexts to find if the person is fixed
-            ctx = conv.contexts.get('person')
+            ctx = conv.contexts.get('person_ctx')
             person_id = ctx.parameters['person_id']
-        else:  # fail to get any person info, ask users to get more inforation
+        else:  # fail to get any person info, ask users to get more information
             conv.ask(render_template('ask.person.info'))
             return conv
 
     # response construction
     sex = df.loc[df['person_id'] == person_id, 'sex'].tolist()[0]
     birth_year = int(df.loc[df['person_id'] == person_id, 'birth_year'].tolist()[0])
-    response = ''
-    if sex == 'Male':
-        response += 'He '
-    else:
-        response += 'She '
+    response = 'He ' if sex == 'Male' else 'She '
     response += 'was born in '
     if birth_year < 0:
         response += f'{str(abs(birth_year))} BCE.'

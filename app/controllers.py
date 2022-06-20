@@ -53,6 +53,7 @@ def get_id_by_occu(occu):
     df = read_dataset()
     df = df.loc[df['occupation'] == occu]
     person = df.head(1)
-    name = person.iloc[0]['full_name']
-    occupation = person.iloc[0]['occupation']
-    return name, occupation
+    name = person.full_name.item()
+    occupation = person.occupation.item()
+    person_id = person.person_id.item()
+    return name, occupation, person_id
