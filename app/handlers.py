@@ -100,9 +100,9 @@ def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
         response += 'She '
     response += 'was born in '
     if birth_year < 0:
-        response += f'BCE {str(abs(birth_year))}.'
+        response += f'{str(abs(birth_year))} BCE.'
     else:
-        response += f'{str(abs(birth_year))}.'
+        response += f'{str(abs(birth_year))} CE.'
     conv.tell(response)
 
     return conv
