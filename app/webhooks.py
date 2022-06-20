@@ -25,6 +25,15 @@ def dataset_summary_handler(conv: V2beta1DialogflowConversation) -> V2beta1Dialo
     return handlers.construct_dataset_summary(conv)
 
 
+@agent.handle(intent="dataset.features")
+def dataset_features_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    conv.tell(
+        "In the dataset, there is much information about historical figures, such as name, hometown, "
+        "birth year and occupations, etc. For example, Aristotle was born in 384 BCE in Greece. He is "
+        "a philosopher in the humanities.")
+    return conv
+
+
 @agent.handle(intent="features.historical_popularity_index")
 def dataset_summary_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     conv.tell(
@@ -43,3 +52,8 @@ def address_search_handler(conv: V2beta1DialogflowConversation) -> V2beta1Dialog
 @agent.handle(intent="domain.search")
 def domain_search_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     return handlers.domain_search(conv)
+
+
+@agent.handle(intent="person.birth_year")
+def person_birthyear_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    return handlers.person_birth_year(conv)
