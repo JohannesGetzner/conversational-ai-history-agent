@@ -31,30 +31,21 @@ def read_dataset() -> pd.DataFrame:
     return d
 
 
-def get_ID_by_adress(city='',country='', continent=''):
-    df = read_dataset()
-    #print(df)
-    if city != '':
-        match = df['city'] ==city
-        person =df[match].head(1)
-        name = person.iloc[0]['full_name']
-        personIDs = person.iloc[0]['person_id']
-        occupation = person.iloc[0]['occupation']
-    elif country != '':
-        match = df['country'] ==country
-        person =df[match].head(1)
-        name = person.iloc[0]['full_name']
-        personIDs = person.iloc[0]['person_id']
-        occupation = person.iloc[0]['occupation']
-    elif continent != '':
-        match = df['continent'] ==continent
-        df =df[match]
-        person = df.head(1)
-        name = person.iloc[0]['full_name']
-        personIDs = person.iloc[0]['person_id']
-        occupation = person.iloc[0]['occupation']
+def get_id_by_address(city, country, continent):
 
-    return name,personIDs, occupation
+    if city != '':
+        geo_feature = 'city'
+    elif country != '':
+        geo_feature = 'country'
+    elif continent != '':
+        geo_feature = 'continent'
+    df = read_dataset()
+    match = df[geo_feature] == eval(geo_feature)
+
+    df = df[match]
+    person = df.head(1)
+
+    return person
 
 
 def get_ID_by_occu(occu):

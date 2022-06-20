@@ -33,24 +33,22 @@ def construct_dataset_summary(conv: V2beta1DialogflowConversation) -> V2beta1Dia
     conv.tell(summary)
     return conv
 
+
 def address_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
-    city = conv.parameters.get('geo-city')
-    city = city.title()
+    city, country, continent = conv.parameters.get('geo-city').title(), conv.parameters.get(
+        'geo-country').title(), conv.parameters.get('continent').title()
 
-    country = conv.parameters.get('geo-country')
-    country = country.title()
-
-    continent = conv.parameters.get('continent')
-    continent = continent.title()
-
-    name,personIDs,occupation=controllers.get_ID_by_adress(city = city,country = country,continent = continent)
-
-    conv.contexts.set('person_ctx',lifespan_count = 6, name = name)
-    print(conv)
-
-    conv.ask(render_template("address_search",name = name,occupation = occupation))
-    conv.google.ask(render_template("address_search", name = name, occupation = occupation))
+    person = controllers.get_id_by_address(city, country, continent)
+    if person:
+        name = person.full_name.item()
+        occupation = person.occupation.item()
+        conv.contexts.set('person_ctx', lifespan_count=6, name=name)
+        conv.ask(render_template("address_search", name=name, occupation=occupation))
+        conv.google.ask(render_template("address_search", name=name, occupation=occupation))
+    else:
+        conv.tell('Sorry!, I could not find anyone from there')
     return conv
+
 
 def domain_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     occu = conv.parameters.get('occu')
@@ -64,6 +62,7 @@ def domain_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConve
 
     return conv
 
+
 def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     '''
         Get the birth year of a historical figure.
@@ -73,7 +72,7 @@ def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
         3. if no context set, ask user to provide more information
     '''
     df = controllers.read_dataset()
-    
+
     # find out whose birth year is asked, get person_id
     # get the person from the given parameters in last question.
     full_name = conv.parameters.get('person-full-name')
@@ -81,12 +80,12 @@ def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
     if len(full_name) > 0:
         person_id = df.loc[df['full_name'] == full_name, 'person_id'].tolist()[0]
         conv.contexts.set('person', lifespan_count=5, person_id=person_id)
-    else: # no recorded full_name is given
+    else:  # no recorded full_name is given
         if conv.contexts.has('person'):
             # check the current contexts to find if the person is fixed
             ctx = conv.contexts.get('person')
             person_id = ctx.parameters['person_id']
-        else: # fail to get any person info, ask users to get more inforation
+        else:  # fail to get any person info, ask users to get more inforation
             conv.ask(render_template('ask.person.info'))
             return conv
 
