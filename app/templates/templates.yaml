@@ -16,3 +16,8 @@ dataset.summary:
 - The dataset contains information about historical figures. Each person is described by multiple features such as {% for column in columns %} {{column}}{{ ", " if not loop.last else "" }} {% endfor %} . An example is {{example}}
 - The table contains data about historical figures. Here is a example{{ ":" }} {{example}}. Other attributes could be {% for column in columns %} {{column}}{{ ", " if not loop.last else "" }} {% endfor %}.
 
+address_search:
+- Yes, {{name}} is a {{occupation}} from there.
+
+domain_search:
+- Yes, {{name}} is a {{occupation}}.

@@ -32,3 +32,14 @@ def dataset_summary_handler(conv: V2beta1DialogflowConversation) -> V2beta1Dialo
         "online biography. Parameters such as the number of views and the number of languages the article is available "
         "in, influence this metric.")
     return conv
+
+
+@agent.handle(intent="address.search")
+def address_search_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+
+    return handlers.address_search(conv)
+
+
+@agent.handle(intent="domain.search")
+def domain_search_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    return handlers.domain_search(conv)

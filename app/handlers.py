@@ -32,3 +32,33 @@ def construct_dataset_summary(conv: V2beta1DialogflowConversation) -> V2beta1Dia
     summary = render_template("dataset.summary", columns=columns_subset, example=example)
     conv.tell(summary)
     return conv
+
+def address_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    city = conv.parameters.get('geo-city')
+    city = city.title()
+
+    country = conv.parameters.get('geo-country')
+    country = country.title()
+
+    continent = conv.parameters.get('continent')
+    continent = continent.title()
+
+    name,personIDs,occupation=controllers.get_ID_by_adress(city = city,country = country,continent = continent)
+
+    conv.contexts.set('person_ctx',lifespan_count = 6, name = name)
+    print(conv)
+
+    conv.ask(render_template("address_search",name = name,occupation = occupation))
+    conv.google.ask(render_template("address_search", name = name, occupation = occupation))
+    return conv
+
+def domain_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    occu = conv.parameters.get('occu')
+    occu = occu.title()
+    name, personIDs, occupation = controllers.get_ID_by_occu(occu)
+    print(conv)
+
+    conv.ask(render_template("domain_search", name=name, occupation=occupation))
+    conv.google.ask(render_template("domain_search", name=name, occupation=occupation))
+
+    return conv
