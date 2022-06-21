@@ -44,10 +44,9 @@ def dataset_hpi_handler(conv: V2beta1DialogflowConversation) -> V2beta1Dialogflo
     return conv
 
 
-@agent.handle(intent="address.search")
+@agent.handle(intent="location.search")
 def address_search_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
-
-    return handlers.address_search(conv)
+    return handlers.location_search(conv)
 
 
 @agent.handle(intent="domain.search")

@@ -34,20 +34,20 @@ def construct_dataset_summary(conv: V2beta1DialogflowConversation) -> V2beta1Dia
     return conv
 
 
-def address_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+def location_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     city, country, continent = conv.parameters.get('geo-city').title(), conv.parameters.get(
         'geo-country').title(), conv.parameters.get('continent').title()
 
-    person = controllers.get_id_by_address(city, country, continent)
-    if person:
+    person = controllers.get_person_by_location(city, country, continent)
+    if person is not None:
         name = person.full_name.item()
         occupation = person.occupation.item()
         person_id = person.person_id.item()
         conv.contexts.set('person_ctx', lifespan_count=6, person_id=person_id)
-        conv.ask(render_template("address_search", name=name, occupation=occupation))
-        conv.google.ask(render_template("address_search", name=name, occupation=occupation))
+        conv.ask(render_template("location_search", name=name, occupation=occupation))
+        conv.google.ask(render_template("location_search", name=name, occupation=occupation))
     else:
-        conv.tell('Sorry!, I could not find anyone from there')
+        conv.tell(f'Sorry! I could not find anyone from there. Please try again.')
     return conv
 
 
@@ -75,8 +75,7 @@ def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
 
     # find out whose birth year is asked, get person_id
     # get the person from the given parameters in last question.
-    full_name = conv.parameters.get('person-full-name')
-    # print(full_name)
+    full_name = conv.parameters.get('person_full_name')
     if len(full_name) > 0:
         person_id = df.loc[df['full_name'] == full_name, 'person_id'].tolist()[0]
         conv.contexts.set('person_ctx', lifespan_count=5, person_id=person_id)

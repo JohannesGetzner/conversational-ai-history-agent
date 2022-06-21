@@ -31,7 +31,7 @@ def read_dataset() -> pd.DataFrame:
     return d
 
 
-def get_id_by_address(city, country, continent):
+def get_person_by_location(city, country, continent):
     if city != '':
         geo_feature = 'city'
     elif country != '':
@@ -44,6 +44,8 @@ def get_id_by_address(city, country, continent):
     df = read_dataset()
     match = df[geo_feature] == eval(geo_feature)
     df = df[match]
+    if df.empty:
+        return None
     person = df.head(1)
 
     return person
