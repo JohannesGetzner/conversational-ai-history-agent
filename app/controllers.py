@@ -38,23 +38,23 @@ def get_ID_by_adress(city='',country='', continent=''):
         match = df['city'] ==city
         person =df[match].head(1)
         name = person.iloc[0]['full_name']
-        personIDs = person.iloc[0]['person_id']
+
         occupation = person.iloc[0]['occupation']
     elif country != '':
         match = df['country'] ==country
         person =df[match].head(1)
         name = person.iloc[0]['full_name']
-        personIDs = person.iloc[0]['person_id']
+
         occupation = person.iloc[0]['occupation']
     elif continent != '':
         match = df['continent'] ==continent
         df =df[match]
         person = df.head(1)
         name = person.iloc[0]['full_name']
-        personIDs = person.iloc[0]['person_id']
+
         occupation = person.iloc[0]['occupation']
 
-    return name,personIDs, occupation
+    return name, occupation
 
 
 def get_ID_by_occu(occu):
@@ -63,7 +63,7 @@ def get_ID_by_occu(occu):
     df = df[match]
     person = df.head(1)
     name = person.iloc[0]['full_name']
-    personIDs = person.iloc[0]['person_id']
+
     occupation = person.iloc[0]['occupation']
 
-    return name, personIDs, occupation
+    return name, occupation
