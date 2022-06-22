@@ -46,15 +46,16 @@ def get_person_by_location(city, country, continent):
     df = df[match]
     if df.empty:
         return None
-    person = df.head(1)
-
+    person = df.head(10)
+    person = person.sample()
     return person
 
 
 def get_id_by_occu(occu):
     df = read_dataset()
     df = df.loc[df['occupation'] == occu]
-    person = df.head(1)
+    person = df.head(10)
+    person = person.sample()
     name = person.full_name.item()
     occupation = person.occupation.item()
     person_id = person.person_id.item()
