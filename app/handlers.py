@@ -38,14 +38,14 @@ def location_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowCon
     city, country, continent = conv.parameters.get('geo-city').title(), conv.parameters.get(
         'geo-country').title(), conv.parameters.get('continent').title()
 
-    person = controllers.get_person_by_location(city, country, continent)
+    person,count = controllers.get_person_by_location(city, country, continent)
     if person is not None:
         name = person.full_name.item()
         occupation = person.occupation.item()
         person_id = person.person_id.item()
         conv.contexts.set('person_ctx', lifespan_count=6, person_id=person_id)
-        conv.ask(render_template("location_search", name=name, occupation=occupation))
-        conv.google.ask(render_template("location_search", name=name, occupation=occupation))
+        conv.ask(render_template("location_search", count = count, name=name, occupation=occupation))
+        conv.google.ask(render_template("location_search", count = count,name=name, occupation=occupation))
     else:
         conv.tell(f'Sorry! I could not find anyone from there. Please try again.')
     return conv
@@ -57,8 +57,8 @@ def domain_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConve
     conv.contexts.set('person_ctx', lifespan_count=6, person_id=person_id)
     print(conv)
 
-    conv.ask(render_template("domain_search", name=name, occupation=occupation))
-    conv.google.ask(render_template("domain_search", name=name, occupation=occupation))
+    conv.ask(render_template("domain_search", count = count,name=name, occupation=occupation))
+    conv.google.ask(render_template("domain_search", count = count, name=name, occupation=occupation))
 
     return conv
 
