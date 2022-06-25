@@ -17,10 +17,10 @@ dataset.summary:
 - The table contains data about historical figures. Here is a example{{ ":" }} {{example}}. Other attributes could be {% for column in columns %} {{column}}{{ ", " if not loop.last else "" }} {% endfor %}.
 
 location_search:
-- Yes, there are {{count}} people from this place. For example{{":"}}{{name}}, a {{occupation}} is from there.
+- Yes, there are {{count}} people from this place. For example {{":"}} {{name}}, a {{occupation}} is from there.
 
 domain_search:
-- Yes, there are {{count}} people in this domain. For example{{":"}}{{name}} is a {{occupation}}.
+- Yes, there are {{count}} people in this domain. For example {{":"}} {{name}} from {{location}} is a {{occupation}}.
 
 ask.person.info:
 - Can you tell me which person you mean?

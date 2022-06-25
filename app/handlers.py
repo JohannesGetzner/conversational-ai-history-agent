@@ -53,12 +53,17 @@ def location_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowCon
 
 def domain_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     occu = conv.parameters.get('occu').title()
-    name, occupation, person_id = controllers.get_id_by_occu(occu)
+    person,count = controllers.get_id_by_occu(occu)
+    name = person.full_name.item()
+    occupation = person.occupation.item()
+    person_id = person.person_id.item()
+    location = person.country.item()
+    
     conv.contexts.set('person_ctx', lifespan_count=6, person_id=person_id)
     print(conv)
 
-    conv.ask(render_template("domain_search", count = count,name=name, occupation=occupation))
-    conv.google.ask(render_template("domain_search", count = count, name=name, occupation=occupation))
+    conv.ask(render_template("domain_search", count = count,name=name, location = location,occupation=occupation))
+    conv.google.ask(render_template("domain_search", count = count, name=name, location = location,occupation=occupation))
 
     return conv
 

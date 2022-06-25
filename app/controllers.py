@@ -69,7 +69,5 @@ def get_id_by_occu(occu):
         person = df.head(10)
         person = person.sample()
 
-    name = person.full_name.item()
-    occupation = person.occupation.item()
-    person_id = person.person_id.item()
-    return name, occupation, person_id, count
+    
+    return person,count
