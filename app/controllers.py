@@ -17,7 +17,7 @@ def get_random_element(number: int) -> list:
     return random_selection
 
 
-def compute_dataset_size() -> (int, int):
+def compute_dataset_size() -> tuple:
     d = read_dataset()
     return d.shape[0], d.shape[1]
 
@@ -71,3 +71,17 @@ def get_id_by_occu(occu):
 
     
     return person,count
+
+def get_id_by_birth_year(birth_year):
+    df = read_dataset()
+    df = df.loc[df['birth_year'] == str(birth_year)]
+    # check how many people was born in this year
+    count = df.shape[0]
+    
+    if df.shape[0] == 0: # no person matched
+        person = None
+    else: # sample one from min(10, count) persons
+        person = df.head(min(10, count))
+        person = person.sample()
+    
+    return person, count

@@ -22,6 +22,9 @@ location_search:
 domain_search:
 - Yes, there are {{count}} people in this domain. For example {{":"}} {{name}} from {{location}} is a {{occupation}}.
 
+birth_year_search:
+- Yes, there are {{count}} people born in {{birth_year_response}}. For example {{":"}} {{name}}.
+
 ask.person.info:
 - Can you tell me which person you mean?
 - Can you tell me the full name of the person you mentioned?

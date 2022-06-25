@@ -27,7 +27,6 @@ def dataset_summary_handler(conv: V2beta1DialogflowConversation) -> V2beta1Dialo
 
 @agent.handle(intent="dataset.features")
 def dataset_features_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
-    # TODO: do we need to remove person context if user now asks about the whole dataset??
     conv.tell(
         "In the dataset, there is much information about historical figures, such as name, hometown, "
         "birth year and occupations, etc. For example, Aristotle was born in 384 BCE in Greece. He is "
@@ -52,6 +51,11 @@ def address_search_handler(conv: V2beta1DialogflowConversation) -> V2beta1Dialog
 @agent.handle(intent="domain.search")
 def domain_search_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     return handlers.domain_search(conv)
+
+
+@agent.handle(intent="birth_year.search")
+def birth_year_search_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    return handlers.birth_year_search(conv)
 
 
 @agent.handle(intent="person.birth_year")

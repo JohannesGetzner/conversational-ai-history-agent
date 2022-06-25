@@ -68,6 +68,28 @@ def domain_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConve
     return conv
 
 
+def birth_year_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    birth_year = int(conv.parameters.get('number'))
+    if birth_year < 0:
+        birth_year_response = f'{str(abs(birth_year))} BCE'
+    else:
+        birth_year_response = f'{str(abs(birth_year))} CE'
+    person, count = controllers.get_id_by_birth_year(birth_year)
+
+    if person is None:
+        conv.tell(f'Sorry! No one that I know was born in {birth_year_response}. Maybe you could ask me others?')
+    else:
+        name = person.full_name.item()
+        person_id = person.person_id.item()
+        
+        conv.contexts.set('person_ctx', lifespan_count=4, person_id=person_id)
+
+        conv.ask(render_template("birth_year_search", count=count, name=name, birth_year_response=birth_year_response))
+        conv.google.ask(render_template("birth_year_search", count=count, name=name, birth_year_response=birth_year_response))
+
+    return conv
+
+
 def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     '''
         Get the birth year of a historical figure.
@@ -83,7 +105,7 @@ def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
     full_name = conv.parameters.get('person_full_name')
     if len(full_name) > 0:
         person_id = df.loc[df['full_name'] == full_name, 'person_id'].tolist()[0]
-        conv.contexts.set('person_ctx', lifespan_count=5, person_id=person_id)
+        conv.contexts.set('person_ctx', lifespan_count=4, person_id=person_id)
     else:  # no recorded full_name is given
         if conv.contexts.has('person_ctx'):
             # check the current contexts to find if the person is fixed
@@ -94,8 +116,9 @@ def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
             return conv
 
     # response construction
-    sex = df.loc[df['person_id'] == person_id, 'sex'].tolist()[0]
-    birth_year = int(df.loc[df['person_id'] == person_id, 'birth_year'].tolist()[0])
+    person = df[df['person_id'] == person_id]
+    sex = person.sex.item()
+    birth_year = int(person.birth_year.item())
     response = 'He ' if sex == 'Male' else 'She '
     response += 'was born in '
     if birth_year < 0:
