@@ -78,9 +78,16 @@ def person_sex_handler(conv: V2beta1DialogflowConversation) -> V2beta1Dialogflow
 def person_sex_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     return handlers.person_attribute(conv, "location")
 
+
+@agent.handle(intent="person.hpi")
+def person_hpi_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    return handlers.person_attribute(conv, "historical_popularity_index")
+
+
 @agent.handle(intent="dataset.more_info")
 def person_sex_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     return handlers.dataset_more_info(conv)
+
 
 @agent.handle(intent="dataset.example")
 def person_sex_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:

@@ -31,12 +31,15 @@ ask.person.info:
   - Can you give me more information about the person you have in mind?
 
 person.sex:
-  - The historical figure {{full_name}} is {{attribute}}.
+  - The historical figure '{{full_name}}' is {{attribute}}.
   - The gender of {{full_name}} is {{attribute}}.
 
+person.historical_popularity_index:
+  - The HPI of {{full_name}} is {{attribute}}.
+
 person.domain:
-  - The historical figure {{full_name}} is a {{attribute}}.
-  - Person {{full_name}} is a {{attribute}}.
+  - The historical figures domain is a {{attribute}}.
+  - The occupation of {{full_name}} is {{attribute}}.
 
 person.location:
   - The historical figure {{full_name}} is from {{attribute}}.
