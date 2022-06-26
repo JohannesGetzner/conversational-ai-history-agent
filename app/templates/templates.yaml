@@ -13,8 +13,8 @@ dataset.size:
   - The dataset contains {{num_rows}} observations with {{num_columns}} features.
 
 dataset.summary:
-  - The dataset contains information about historical figures. Each person is described by multiple features such as {% for column in columns %} {{column}}{{ ", " if not loop.last else "" }} {% endfor %} . An example is {{example}}
-  - The table contains data about historical figures. Here is a example{{ ":" }} {{example}}. Other attributes could be {% for column in columns %} {{column}}{{ ", " if not loop.last else "" }} {% endfor %}.
+  - The dataset contains information about historical figures. Each person is described by multiple features such as {% for column in columns %} {{column}}{{ ", " if not loop.last else "" }} {% endfor %} and more. An example is {{example}}
+  - The table contains data about historical figures. Here is an example{{ ":" }} {{example}}. Other attributes include {% for column in columns %} {{column}}{{ ", " if not loop.last else "" }} {% endfor %} and more.
 
 location_search:
   - Yes, there are {{count}} people from this place. For example {{":"}} {{name}}, a {{occupation}} is from there.
@@ -31,5 +31,13 @@ ask.person.info:
   - Can you give me more information about the person you have in mind?
 
 person.sex:
-  - The historical figure {{full_name}} is {{gender}}.
-  - The gender of {{full_name}} is {{gender}}.
+  - The historical figure {{full_name}} is {{attribute}}.
+  - The gender of {{full_name}} is {{attribute}}.
+
+person.domain:
+  - The historical figure {{full_name}} is a {{attribute}}.
+  - Person {{full_name}} is a {{attribute}}.
+
+person.location:
+  - The historical figure {{full_name}} is from {{attribute}}.
+  - Figure {{full_name}} lives in {{attribute}}.

@@ -28,8 +28,8 @@ def dataset_summary_handler(conv: V2beta1DialogflowConversation) -> V2beta1Dialo
 @agent.handle(intent="dataset.features")
 def dataset_features_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     conv.tell(
-        "In the dataset, there is much information about historical figures, such as name, hometown, "
-        "birth year and occupations, etc. For example, Aristotle was born in 384 BCE in Greece. He is "
+        "The dataset contains a lot of information about historical figures, such as name, hometown, "
+        "birth year and occupation. For example, Aristotle was born in 384 BCE in Greece. He is "
         "a philosopher in the humanities.")
     return conv
 
@@ -66,4 +66,18 @@ def person_birthyear_handler(conv: V2beta1DialogflowConversation) -> V2beta1Dial
 
 @agent.handle(intent="person.sex")
 def person_sex_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
-    return handlers.person_sex(conv)
+    return handlers.person_attribute(conv, "sex")
+
+
+@agent.handle(intent="person.domain")
+def person_sex_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    return handlers.person_attribute(conv, "domain")
+
+
+@agent.handle(intent="person.location")
+def person_sex_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    return handlers.person_attribute(conv, "location")
+
+@agent.handle(intent="dataset.more_info")
+def person_sex_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    return handlers.dataset_more_info(conv)

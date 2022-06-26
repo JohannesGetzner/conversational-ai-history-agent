@@ -27,25 +27,32 @@ def retrieve_dataset_size(conv: V2beta1DialogflowConversation) -> V2beta1Dialogf
 def construct_dataset_summary(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     data = controllers.read_dataset()
     columns_subset = random.sample(list(data.columns), 3)
-    random_sample = data.sample(1)
+    random_sample = data.head(10).sample(1)
     example = f"{random_sample.full_name.item()}, a {random_sample.occupation.item()} born year {random_sample.birth_year.item()} in {random_sample.city.item()}"
     summary = render_template("dataset.summary", columns=columns_subset, example=example)
     conv.tell(summary)
+    conv.ask("Would you like to know more?")
+    conv.google.ask("Would you like to know more?")
     return conv
+
+
+
+def dataset_more_info(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    pass
 
 
 def location_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     city, country, continent = conv.parameters.get('geo-city').title(), conv.parameters.get(
         'geo-country').title(), conv.parameters.get('continent').title()
 
-    person,count = controllers.get_person_by_location(city, country, continent)
+    person, count = controllers.get_person_by_location(city, country, continent)
     if person is not None:
         name = person.full_name.item()
         occupation = person.occupation.item()
         person_id = person.person_id.item()
         conv.contexts.set('person_ctx', lifespan_count=6, person_id=person_id)
-        conv.ask(render_template("location_search", count = count, name=name, occupation=occupation))
-        conv.google.ask(render_template("location_search", count = count,name=name, occupation=occupation))
+        conv.ask(render_template("location_search", count=count, name=name, occupation=occupation))
+        conv.google.ask(render_template("location_search", count=count, name=name, occupation=occupation))
     else:
         conv.tell(f'Sorry! I could not find anyone from there. Please try again.')
     return conv
@@ -53,17 +60,17 @@ def location_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowCon
 
 def domain_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     occu = conv.parameters.get('occu').title()
-    person,count = controllers.get_id_by_occu(occu)
+    person, count = controllers.get_id_by_occu(occu)
     name = person.full_name.item()
     occupation = person.occupation.item()
     person_id = person.person_id.item()
     location = person.country.item()
-    
+
     conv.contexts.set('person_ctx', lifespan_count=6, person_id=person_id)
     print(conv)
 
-    conv.ask(render_template("domain_search", count = count,name=name, location = location,occupation=occupation))
-    conv.google.ask(render_template("domain_search", count = count, name=name, location = location,occupation=occupation))
+    conv.ask(render_template("domain_search", count=count, name=name, location=location, occupation=occupation))
+    conv.google.ask(render_template("domain_search", count=count, name=name, location=location, occupation=occupation))
 
     return conv
 
@@ -81,11 +88,12 @@ def birth_year_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
     else:
         name = person.full_name.item()
         person_id = person.person_id.item()
-        
+
         conv.contexts.set('person_ctx', lifespan_count=4, person_id=person_id)
 
         conv.ask(render_template("birth_year_search", count=count, name=name, birth_year_response=birth_year_response))
-        conv.google.ask(render_template("birth_year_search", count=count, name=name, birth_year_response=birth_year_response))
+        conv.google.ask(
+            render_template("birth_year_search", count=count, name=name, birth_year_response=birth_year_response))
 
     return conv
 
@@ -130,23 +138,26 @@ def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
     return conv
 
 
-def person_sex(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+def person_attribute(conv: V2beta1DialogflowConversation, attribute):
+    # read dataset and conversation parameters
+
     df = controllers.read_dataset()
     full_name = conv.parameters.get('person_full_name')
 
     if len(full_name) == 0:
         if conv.contexts.has('person_ctx'):
             person = df.loc[df['person_id'] == conv.contexts.get('person_ctx').parameters['person_id']]
-            conv.tell(render_template('person.sex', full_name=person["full_name"].item(), gender=person["sex"].item()))
         else:
             conv.tell("I am sorry, but I am not quite sure who you are referring to. Please try again!")
+            return conv
     else:
         person = df.loc[df['full_name'] == full_name]
-        if not person.empty:
-            conv.contexts.set('person_ctx', lifespan_count=4, person_id=person["person_id"].item())
-            conv.tell(render_template('person.sex', full_name=full_name, gender=person["sex"].item()))
-        else:
+        if person.empty:
             conv.tell(f"Sorry, but I couldn't find anyone named {full_name} in the data-set.")
+            return conv
+        conv.contexts.set('person_ctx', lifespan_count=4, person_id=person["person_id"].item())
+
+    full_name = person["full_name"].item()
+    response_att = controllers.construct_person_attribute_response(attribute, person)
+    conv.tell(render_template(f'person.{attribute}', full_name=full_name, attribute=response_att))
     return conv
-
-

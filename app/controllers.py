@@ -85,3 +85,13 @@ def get_id_by_birth_year(birth_year):
         person = person.sample()
 
     return person, count
+
+
+def construct_person_attribute_response(attribute, person):
+    if attribute == 'domain':
+        part = f"{person['occupation'].item()} in {person['domain'].item()}"
+    elif attribute == 'location':
+        part = f"{person['city'].item()} in {person['country'].item()}"
+    else:
+        part = person[attribute].item()
+    return part
