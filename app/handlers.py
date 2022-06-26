@@ -31,14 +31,28 @@ def construct_dataset_summary(conv: V2beta1DialogflowConversation) -> V2beta1Dia
     example = f"{random_sample.full_name.item()}, a {random_sample.occupation.item()} born year {random_sample.birth_year.item()} in {random_sample.city.item()}"
     summary = render_template("dataset.summary", columns=columns_subset, example=example)
     conv.tell(summary)
-    conv.ask("Would you like to know more?")
-    conv.google.ask("Would you like to know more?")
+    conv.google.tell(summary)
+    conv.ask("Would you like to find out more?")
+    conv.google.ask("Would you like to find out more?")
     return conv
 
 
-
 def dataset_more_info(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
-    pass
+    yes = conv.parameters.get('yes')
+    no = conv.parameters.get('no')
+    if len(yes) != 0:
+        df = controllers.read_dataset()
+        conv.tell(
+            f"The dataset contains {df.shape[0]} entries and {df.shape[1]} columns. The entries are all ordered "
+            f"according to the historical-popularity index (HPI). The important features are name, sex, brith_year, "
+            f"city, country, continent, occupation, domain, industry and the hpi")
+        conv.google.tell()
+        conv.tell("If you want you can always ask me for an example.")
+    elif len(no) != 0:
+        conv.tell("Alright! If you want to find out what else I can do, just ask 'What can you do?'")
+    else:
+        conv.tell("I couldn't quite follow. Please repeat!")
+    return conv
 
 
 def location_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
