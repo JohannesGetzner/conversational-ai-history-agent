@@ -128,3 +128,25 @@ def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
     conv.tell(response)
 
     return conv
+
+
+def person_sex(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    df = controllers.read_dataset()
+    full_name = conv.parameters.get('person_full_name')
+
+    if len(full_name) == 0:
+        if conv.contexts.has('person_ctx'):
+            person = df.loc[df['person_id'] == conv.contexts.get('person_ctx').parameters['person_id']]
+            conv.tell(render_template('person.sex', full_name=person["full_name"].item(), gender=person["sex"].item()))
+        else:
+            conv.tell("I am sorry, but I am not quite sure who you are referring to. Please try again!")
+    else:
+        person = df.loc[df['full_name'] == full_name]
+        if not person.empty:
+            conv.contexts.set('person_ctx', lifespan_count=4, person_id=person["person_id"].item())
+            conv.tell(render_template('person.sex', full_name=full_name, gender=person["sex"].item()))
+        else:
+            conv.tell(f"Sorry, but I couldn't find anyone named {full_name} in the data-set.")
+    return conv
+
+

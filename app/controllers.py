@@ -44,23 +44,23 @@ def get_person_by_location(city, country, continent):
     df = read_dataset()
     match = df[geo_feature] == eval(geo_feature)
     df = df[match]
-    
+
     if df.empty:
         return None
-    
+
     count = df.shape[0]
-    if df.shape[0]<10:
+    if df.shape[0] < 10:
         person = df.sample()
     else:
         person = df.head(10)
         person = person.sample()
-    return person,count
+    return person, count
 
 
 def get_id_by_occu(occu):
     df = read_dataset()
     df = df.loc[df['occupation'] == occu]
-    
+
     count = df.shape[0]
 
     if df.shape[0] < 10:
@@ -69,19 +69,19 @@ def get_id_by_occu(occu):
         person = df.head(10)
         person = person.sample()
 
-    
-    return person,count
+    return person, count
+
 
 def get_id_by_birth_year(birth_year):
     df = read_dataset()
     df = df.loc[df['birth_year'] == str(birth_year)]
     # check how many people was born in this year
     count = df.shape[0]
-    
-    if df.shape[0] == 0: # no person matched
+
+    if df.shape[0] == 0:  # no person matched
         person = None
-    else: # sample one from min(10, count) persons
+    else:  # sample one from min(10, count) persons
         person = df.head(min(10, count))
         person = person.sample()
-    
+
     return person, count

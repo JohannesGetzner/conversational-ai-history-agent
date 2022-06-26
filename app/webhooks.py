@@ -62,3 +62,8 @@ def birth_year_search_handler(conv: V2beta1DialogflowConversation) -> V2beta1Dia
 def person_birthyear_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     # TODO: do we need to handle queries like who was born earliest?
     return handlers.person_birth_year(conv)
+
+
+@agent.handle(intent="person.sex")
+def person_sex_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    return handlers.person_sex(conv)

@@ -2,30 +2,34 @@
 
 
 test_response:
-- This is a test response.
+  - This is a test response.
 
 
 dataset.size:
-- The dataset has {{num_rows}} rows and {{num_columns}} columns.
-- The dataset has {{num_rows}} rows and {{num_columns}} features.
-- The size of the dataset is  {{num_rows}} x {{num_columns}}.
-- The dataset is of size {{num_rows}} x {{num_columns}}.
-- The dataset contains {{num_rows}} observations with {{num_columns}} features.
+  - The dataset has {{num_rows}} rows and {{num_columns}} columns.
+  - The dataset has {{num_rows}} rows and {{num_columns}} features.
+  - The size of the dataset is  {{num_rows}} x {{num_columns}}.
+  - The dataset is of size {{num_rows}} x {{num_columns}}.
+  - The dataset contains {{num_rows}} observations with {{num_columns}} features.
 
 dataset.summary:
-- The dataset contains information about historical figures. Each person is described by multiple features such as {% for column in columns %} {{column}}{{ ", " if not loop.last else "" }} {% endfor %} . An example is {{example}}
-- The table contains data about historical figures. Here is a example{{ ":" }} {{example}}. Other attributes could be {% for column in columns %} {{column}}{{ ", " if not loop.last else "" }} {% endfor %}.
+  - The dataset contains information about historical figures. Each person is described by multiple features such as {% for column in columns %} {{column}}{{ ", " if not loop.last else "" }} {% endfor %} . An example is {{example}}
+  - The table contains data about historical figures. Here is a example{{ ":" }} {{example}}. Other attributes could be {% for column in columns %} {{column}}{{ ", " if not loop.last else "" }} {% endfor %}.
 
 location_search:
-- Yes, there are {{count}} people from this place. For example {{":"}} {{name}}, a {{occupation}} is from there.
+  - Yes, there are {{count}} people from this place. For example {{":"}} {{name}}, a {{occupation}} is from there.
 
 domain_search:
-- Yes, there are {{count}} people in this domain. For example {{":"}} {{name}} from {{location}} is a {{occupation}}.
+  - Yes, there are {{count}} people in this domain. For example {{":"}} {{name}} from {{location}} is a {{occupation}}.
 
 birth_year_search:
-- Yes, there are {{count}} people born in {{birth_year_response}}. For example {{":"}} {{name}}.
+  - Yes, there are {{count}} people born in {{birth_year_response}}. For example {{":"}} {{name}}.
 
 ask.person.info:
-- Can you tell me which person you mean?
-- Can you tell me the full name of the person you mentioned?
-- Can you give me more information about the person you have in mind?
+  - Can you tell me which person you mean?
+  - Can you tell me the full name of the person you mentioned?
+  - Can you give me more information about the person you have in mind?
+
+person.sex:
+  - The historical figure {{full_name}} is {{gender}}.
+  - The gender of {{full_name}} is {{gender}}.
