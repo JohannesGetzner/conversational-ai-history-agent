@@ -55,6 +55,25 @@ def dataset_more_info(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
     return conv
 
 
+def dataset_example(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    df = controllers.read_dataset()
+    random_person = df.sample(1)
+    conv.tell("Here is a random example:")
+    conv.tell(
+        render_template(
+            "dataset_example",
+            full_name=random_person["full_name"].item(),
+            occupation=random_person["occupation"].item(),
+            birth_year=random_person["birth_year"].item(),
+            domain=random_person["domain"].item(),
+            city=random_person["city"].item(),
+            country=random_person["country"].item(),
+            gender=random_person["sex"].item(),
+            hpi=random_person["historical_popularity_index"].item()
+        ))
+    return conv
+
+
 def location_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     city, country, continent = conv.parameters.get('geo-city').title(), conv.parameters.get(
         'geo-country').title(), conv.parameters.get('continent').title()

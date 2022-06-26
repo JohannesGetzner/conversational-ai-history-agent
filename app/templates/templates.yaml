@@ -41,3 +41,6 @@ person.domain:
 person.location:
   - The historical figure {{full_name}} is from {{attribute}}.
   - Figure {{full_name}} lives in {{attribute}}.
+
+dataset_example:
+  - Figure '{{full_name}}' is a {{occupation}} in {{domain}} born in year {{birth_year}} in {{city}} in {{country}}. {% if 'Male' == gender %} He {% else %} She {% endif %} has a HPI of {{hpi}}

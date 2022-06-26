@@ -81,3 +81,7 @@ def person_sex_handler(conv: V2beta1DialogflowConversation) -> V2beta1Dialogflow
 @agent.handle(intent="dataset.more_info")
 def person_sex_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     return handlers.dataset_more_info(conv)
+
+@agent.handle(intent="dataset.example")
+def person_sex_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    return handlers.dataset_example(conv)
