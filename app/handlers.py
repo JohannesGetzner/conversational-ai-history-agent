@@ -20,7 +20,7 @@ def test_intent(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConvers
 
 def retrieve_dataset_size(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     size = controllers.compute_dataset_size()
-    conv.tell(render_template("dataset.size", num_rows=size[0], num_columns=size[1]))
+    conv.tell(render_template("dataset_size", num_rows=size[0], num_columns=size[1]))
     return conv
 
 
@@ -29,7 +29,7 @@ def construct_dataset_summary(conv: V2beta1DialogflowConversation) -> V2beta1Dia
     columns_subset = random.sample(list(data.columns), 3)
     random_sample = data.head(10).sample(1)
     example = f"{random_sample.full_name.item()}, a {random_sample.occupation.item()} born year {random_sample.birth_year.item()} in {random_sample.city.item()}"
-    summary = render_template("dataset.summary", columns=columns_subset, example=example)
+    summary = render_template("dataset_summary", columns=columns_subset, example=example)
     conv.tell(summary)
     conv.google.tell(summary)
     conv.ask("Would you like to find out more?")
@@ -153,7 +153,7 @@ def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
             ctx = conv.contexts.get('person_ctx')
             person_id = ctx.parameters['person_id']
         else:  # fail to get any person info, ask users to get more information
-            conv.ask(render_template('ask.person.info'))
+            conv.ask(render_template('ask_person_info'))
             return conv
 
     # response construction
@@ -192,5 +192,5 @@ def person_attribute(conv: V2beta1DialogflowConversation, attribute):
 
     full_name = person["full_name"].item()
     response_att = controllers.construct_person_attribute_response(attribute, person)
-    conv.tell(render_template(f'person.{attribute}', full_name=full_name, attribute=response_att))
+    conv.tell(render_template(f'person_{attribute}', full_name=full_name, attribute=response_att))
     return conv
