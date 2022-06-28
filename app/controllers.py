@@ -31,6 +31,28 @@ def read_dataset() -> pd.DataFrame:
     return d
 
 
+def get_person_by_name(full_name):
+    df = read_dataset()
+    match = df['full_name']== full_name
+    person = df[match]
+
+    if df.empty:
+        return None
+
+    return person
+
+
+def get_person_by_id(person_id):
+    df = read_dataset()
+    match = df['person_id']== person_id
+    person = df[match]
+
+    if df.empty:
+        return None
+
+    return person
+
+
 def get_person_by_location(city, country, continent):
     if city != '':
         geo_feature = 'city'
@@ -92,6 +114,15 @@ def construct_person_attribute_response(attribute, person):
         part = f"{person['occupation'].item()} in {person['domain'].item()}"
     elif attribute == 'location':
         part = f"{person['city'].item()} in {person['country'].item()}"
+    elif attribute == 'birth_year':
+        sex = person.sex.item()
+        birth_year = int(person.birth_year.item())
+        part = 'He ' if sex == 'Male' else 'She '
+        part += 'was born in '
+        if birth_year < 0:
+            part += f'{str(abs(birth_year))} BCE.'
+        else:
+            part += f'{str(abs(birth_year))} CE.'
     else:
         part = person[attribute].item()
     return part
