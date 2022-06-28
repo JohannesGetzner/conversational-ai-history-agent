@@ -9,6 +9,7 @@ from flask import render_template
 from flask_dialogflow.conversation import V2beta1DialogflowConversation
 from jinja2 import Template
 import random
+import time
 
 
 # define sub handlers
@@ -137,37 +138,55 @@ def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
 
         1. find the person full name from the given user message
         2. if not found, get person info from current context
-        3. if no context set, ask user to provide more information
+        3. if no context set, triger get_person_name_ctx context, ask user to provide more information
     '''
-    df = controllers.read_dataset()
-
     # find out whose birth year is asked, get person_id
     # get the person from the given parameters in last question.
     full_name = conv.parameters.get('person_full_name')
     if len(full_name) > 0:
-        person_id = df.loc[df['full_name'] == full_name, 'person_id'].tolist()[0]
-        conv.contexts.set('person_ctx', lifespan_count=4, person_id=person_id)
+        person = controllers.get_person_by_name(full_name)
+        if person is not None:
+            person_id = person.person_id.item()
+            conv.contexts.set('person_ctx', lifespan_count=5, person_id=person_id)
+        else: # don't have this person's information in the dataset
+            conv.tell(f"I am sorry, but I don't know who is {full_name}. "
+                       "Are you interested in others?")
     else:  # no recorded full_name is given
         if conv.contexts.has('person_ctx'):
             # check the current contexts to find if the person is fixed
             ctx = conv.contexts.get('person_ctx')
             person_id = ctx.parameters['person_id']
         else:  # fail to get any person info, ask users to get more information
-            conv.ask(render_template('ask_person_info'))
+            conv.tell(render_template('ask_person_info'))
+            conv.contexts.set('get_person_name_ctx', lifespan_count=1)
             return conv
 
     # response construction
-    person = df[df['person_id'] == person_id]
-    sex = person.sex.item()
-    birth_year = int(person.birth_year.item())
-    response = 'He ' if sex == 'Male' else 'She '
-    response += 'was born in '
-    if birth_year < 0:
-        response += f'{str(abs(birth_year))} BCE.'
-    else:
-        response += f'{str(abs(birth_year))} CE.'
+    response = controllers.construct_person_attribute_response('birth_year', person)
     conv.tell(response)
+    return conv
 
+def person_birth_year_name(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    '''
+        No person was found in birth year question.
+        Asked for more infos of person.
+        Try to get person name from the user response.
+    '''
+    # find out whose birth year is asked, get person name from user response.
+    if conv.contexts.has('get_person_name_ctx'):
+        full_name = conv.parameters.get('person_full_name')
+        person = controllers.get_person_by_name(full_name)
+        if person is not None:
+            person_id = person.person_id.item()
+            conv.contexts.set('person_ctx', lifespan_count=5, person_id=person_id)
+            response = controllers.construct_person_attribute_response('birth_year', person)
+            conv.tell(response)
+        else: # don't have this person's information in the dataset
+            conv.tell(f"I am sorry, but I don't know who is {full_name}. "
+                       "Are you interested in others?")
+    else:
+        conv.tell(render_template('ask_person_info'))
+        conv.contexts.set('get_person_name_ctx', lifespan_count=1)
     return conv
 
 
