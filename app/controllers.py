@@ -42,6 +42,17 @@ def get_person_by_name(full_name):
     return person
 
 
+def get_person_by_id(person_id):
+    df = read_dataset()
+    match = df['person_id']== person_id
+    person = df[match]
+
+    if df.empty:
+        return None
+
+    return person
+
+
 def get_person_by_location(city, country, continent):
     if city != '':
         geo_feature = 'city'

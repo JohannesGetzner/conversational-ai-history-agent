@@ -156,6 +156,7 @@ def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
             # check the current contexts to find if the person is fixed
             ctx = conv.contexts.get('person_ctx')
             person_id = ctx.parameters['person_id']
+            person = controllers.get_person_by_id(person_id)
         else:  # fail to get any person info, ask users to get more information
             conv.tell(render_template('ask_person_info'))
             conv.contexts.set('get_person_name_ctx', lifespan_count=1)
