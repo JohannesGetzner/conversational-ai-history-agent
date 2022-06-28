@@ -95,3 +95,11 @@ def construct_person_attribute_response(attribute, person):
     else:
         part = person[attribute].item()
     return part
+
+def get_age_data() -> pd.DataFrame:
+    df = read_dataset()
+    ind = df['birth_year'] != 'Unknown'
+    df = df[ind]
+    df.birth_year = df.birth_year.astype(int)
+    df = df.sort_values(by=['birth_year'])
+    return df
