@@ -6,6 +6,7 @@ test_response:
 
 
 dataset_size:
+  - The dataset contains {{num_rows}} people with {{num_columns}} attributes each.
   - The dataset has {{num_rows}} rows and {{num_columns}} columns.
   - The dataset has {{num_rows}} rows and {{num_columns}} features.
   - The size of the dataset is  {{num_rows}} x {{num_columns}}.
@@ -52,3 +53,8 @@ agent_skills: |
   Thanks for asking! You can for example ask me ...
   {% for skill in skills %} {{skill}} {% endfor %}
   I hope that helps! Ask again if you need more ideas!
+
+person_name:
+  - We were referring to {{name}}.
+  - I think you mean {{name}}.
+  - The name was {{name}}.

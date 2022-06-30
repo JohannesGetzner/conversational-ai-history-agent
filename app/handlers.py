@@ -237,7 +237,7 @@ def agent_skills(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConver
     return conv
 
 
-def dataset_most_famous(conv):
+def dataset_most_famous(conv) -> V2beta1DialogflowConversation:
     famous = conv.parameters.get('famous')
     unknown = conv.parameters.get('unknown')
     df = controllers.read_dataset()
@@ -270,4 +270,16 @@ def dataset_most_famous(conv):
         conv.contexts.set('person_ctx', lifespan_count=4, person_id=least_famous.person_id.item())
     else:
         conv.tell("Sorry I didn't get that. Could you rephrase?")
+    return conv
+
+
+def person_name(conv) -> V2beta1DialogflowConversation:
+    if conv.contexts.has('person_ctx'):
+        df = controllers.read_dataset()
+        person = df.loc[df['person_id'] == conv.contexts.get('person_ctx').parameters['person_id']]
+        print(conv.contexts.get('person_ctx'))
+        print(person)
+        conv.tell(render_template('person_name', name=person.full_name.item()))
+    else:
+        conv.tell("Sorry, I don't remember talking about anyone specific.")
     return conv
