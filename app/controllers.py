@@ -123,6 +123,10 @@ def construct_person_attribute_response(attribute, person):
             part += f'{str(abs(birth_year))} BCE.'
         else:
             part += f'{str(abs(birth_year))} CE.'
+    elif attribute == 'general_query':
+        sex = person.sex.item()
+        pronoun = 'him' if sex == 'Male' else 'her'
+        part = f"Yes, I know {pronoun}. What do you want to know about {pronoun}?"
     else:
         part = person[attribute].item()
     return part

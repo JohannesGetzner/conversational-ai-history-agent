@@ -159,7 +159,7 @@ def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
             person = controllers.get_person_by_id(person_id)
         else:  # fail to get any person info, ask users to get more information
             conv.tell(render_template('ask_person_info'))
-            conv.contexts.set('get_person_name_ctx', lifespan_count=1)
+            conv.contexts.set('birth_year_person_name_ctx', lifespan_count=1)
             return conv
 
     # response construction
@@ -168,27 +168,30 @@ def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
     return conv
 
 
-def person_birth_year_name(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+def name_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     '''
-        No person was found in birth year question.
-        Asked for more infos of person.
-        Try to get person name from the user response.
+        Handle search based on a person's full name.
+
+        In particular, match the dialog context to see 
+        if this search is trying to get full_name for birth_year query
+        or for general information of some person.
     '''
-    # find out whose birth year is asked, get person name from user response.
-    if conv.contexts.has('get_person_name_ctx'):
-        full_name = conv.parameters.get('person_full_name')
-        person = controllers.get_person_by_name(full_name)
-        if person is not None:
-            person_id = person.person_id.item()
-            conv.contexts.set('person_ctx', lifespan_count=5, person_id=person_id)
+    # get person name from user response.
+    full_name = conv.parameters.get('person_full_name')
+    person = controllers.get_person_by_name(full_name)
+    if person is not None: # person exists in the dataset
+        person_id = person.person_id.item()
+        conv.contexts.set('person_ctx', lifespan_count=5, person_id=person_id)
+        if conv.contexts.has('birth_year_person_name_ctx'): 
+            # user trying to ask about someone's birth_year
             response = controllers.construct_person_attribute_response('birth_year', person)
             conv.tell(response)
-        else:  # don't have this person's information in the dataset
-            conv.tell(f"I am sorry, but I don't know who is {full_name}. "
-                      "Are you interested in others?")
-    else:
-        conv.tell(render_template('ask_person_info'))
-        conv.contexts.set('get_person_name_ctx', lifespan_count=1)
+        else: # only a general query about a person
+            response = controllers.construct_person_attribute_response('general_query', person)
+            conv.ask(response)
+    else: # don't have this person's information in the dataset
+        conv.tell(f"I am sorry, but I don't know who is {full_name}. "
+                    "Are you interested in others?")
     return conv
 
 
