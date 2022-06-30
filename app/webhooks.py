@@ -101,3 +101,8 @@ def dataset_example_handler(conv: V2beta1DialogflowConversation) -> V2beta1Dialo
 @agent.handle(intent="agent.skills")
 def agent_skills_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     return handlers.agent_skills(conv)
+
+
+@agent.handle(intent="dataset.max_min_hpi")
+def dataset_most_famous_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+    return handlers.dataset_most_famous(conv)

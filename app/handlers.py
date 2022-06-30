@@ -195,7 +195,7 @@ def name_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConvers
     return conv
 
 
-def person_attribute(conv: V2beta1DialogflowConversation, attribute):
+def person_attribute(conv: V2beta1DialogflowConversation, attribute) -> V2beta1DialogflowConversation:
     # read dataset and conversation parameters
 
     df = controllers.read_dataset()
@@ -220,7 +220,7 @@ def person_attribute(conv: V2beta1DialogflowConversation, attribute):
     return conv
 
 
-def agent_skills(conv:V2beta1DialogflowConversation):
+def agent_skills(conv:V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     skills = [
         '- to search for a person by their name \n',
         '- about the birth-year or profession of a person \n',
@@ -234,4 +234,36 @@ def agent_skills(conv:V2beta1DialogflowConversation):
     ]
     random_skills = random.sample(skills, 3)
     conv.tell(render_template('agent_skills', skills=random_skills))
+    return conv
+
+
+def dataset_most_famous(conv):
+    famous = conv.parameters.get('famous')
+    unknown = conv.parameters.get('unknown')
+    df = controllers.read_dataset()
+    location = ''
+    if conv.parameters['geo-country'] != '':
+        df = df.loc[df['country'] == conv.parameters['geo-country']]
+        location = conv.parameters['geo-country']
+    elif conv.parameters['continent'] != '':
+        df = df.loc[df['continent'] == conv.parameters['continent']]
+        location = conv.parameters['continent']
+    elif conv.parameters['geo-city'] != '':
+        df = df.loc[df['geo-city'] == conv.parameters['geo-city']]
+        location = conv.parameters['geo-city']
+
+    df.reset_index(inplace=True, drop=True)
+    most_famous = df.iloc[df['historical_popularity_index'].idxmax()]
+    least_famous = df.iloc[df['historical_popularity_index'].idxmin()]
+
+    response_beginning = f'The most famous person from {location} is' if location != '' else 'The most famous person is'
+    if famous != '' and unknown != '':
+        conv.tell(f"{response_beginning} {most_famous.full_name} with a HPI of {most_famous.historical_popularity_index} and the least famous person is {least_famous.full_name} with a HPI of {least_famous.historical_popularity_index}")
+    elif famous != '':
+        conv.tell(f"{response_beginning} {most_famous.full_name} with a HPI of {most_famous.historical_popularity_index} ")
+    elif unknown != '':
+        conv.tell(
+            f"{response_beginning} {least_famous.full_name} with a HPI of {least_famous.historical_popularity_index} ")
+    else:
+        conv.tell("Sorry I didn't get that. Could you rephrase?")
     return conv
