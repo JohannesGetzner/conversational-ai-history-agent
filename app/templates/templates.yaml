@@ -47,3 +47,8 @@ person_location:
 
 dataset_example:
   - Figure '{{full_name}}' is a {{occupation}} in {{domain}} born in year {{birth_year}} in {{city}} in {{country}}. {% if 'Male' == gender %} He {% else %} She {% endif %} has a HPI of {{hpi}}
+
+agent_skills: |
+  Thanks for asking! You can for example ask me ...
+  {% for skill in skills %} {{skill}} {% endfor %}
+  I hope that helps! Ask again if you need more ideas!

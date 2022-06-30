@@ -48,7 +48,7 @@ def dataset_more_info(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
             f"according to the historical-popularity index (HPI). The important features are name, sex, brith_year, "
             f"city, country, continent, occupation, domain, industry and the hpi")
         conv.google.tell()
-        conv.tell("If you want you can always ask me for an example.")
+        conv.tell("If you want you can always  for an example.")
     elif len(no) != 0:
         conv.tell("Alright! If you want to find out what else I can do, just ask 'What can you do?'")
     else:
@@ -118,7 +118,7 @@ def birth_year_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
     person, count = controllers.get_id_by_birth_year(birth_year)
 
     if person is None:
-        conv.tell(f'Sorry! No one that I know was born in {birth_year_response}. Maybe you could ask me others?')
+        conv.tell(f'Sorry! No one that I know was born in {birth_year_response}. Maybe you could  others?')
     else:
         name = person.full_name.item()
         person_id = person.person_id.item()
@@ -148,9 +148,9 @@ def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
         if person is not None:
             person_id = person.person_id.item()
             conv.contexts.set('person_ctx', lifespan_count=5, person_id=person_id)
-        else: # don't have this person's information in the dataset
+        else:  # don't have this person's information in the dataset
             conv.tell(f"I am sorry, but I don't know who is {full_name}. "
-                       "Are you interested in others?")
+                      "Are you interested in others?")
     else:  # no recorded full_name is given
         if conv.contexts.has('person_ctx'):
             # check the current contexts to find if the person is fixed
@@ -167,6 +167,7 @@ def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
     conv.tell(response)
     return conv
 
+
 def person_birth_year_name(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     '''
         No person was found in birth year question.
@@ -182,9 +183,9 @@ def person_birth_year_name(conv: V2beta1DialogflowConversation) -> V2beta1Dialog
             conv.contexts.set('person_ctx', lifespan_count=5, person_id=person_id)
             response = controllers.construct_person_attribute_response('birth_year', person)
             conv.tell(response)
-        else: # don't have this person's information in the dataset
+        else:  # don't have this person's information in the dataset
             conv.tell(f"I am sorry, but I don't know who is {full_name}. "
-                       "Are you interested in others?")
+                      "Are you interested in others?")
     else:
         conv.tell(render_template('ask_person_info'))
         conv.contexts.set('get_person_name_ctx', lifespan_count=1)
@@ -213,4 +214,21 @@ def person_attribute(conv: V2beta1DialogflowConversation, attribute):
     full_name = person["full_name"].item()
     response_att = controllers.construct_person_attribute_response(attribute, person)
     conv.tell(render_template(f'person_{attribute}', full_name=full_name, attribute=response_att))
+    return conv
+
+
+def agent_skills(conv:V2beta1DialogflowConversation):
+    skills = [
+        '- to search for a person by their name \n',
+        '- about the birth-year or profession of a person \n',
+        '- about the size of the data-set \n',
+        '- to list the features \n',
+        '- to explain what the HPI is \n',
+        '- about the different features in the data-set \n',
+        '- about the birth-place or country of a person \n',
+        '- about the gender of a person \n',
+        '- about how popular a person is \n'
+    ]
+    random_skills = random.sample(skills, 3)
+    conv.tell(render_template('agent_skills', skills=random_skills))
     return conv
