@@ -74,12 +74,12 @@ def person_sex_handler(conv: V2beta1DialogflowConversation) -> V2beta1Dialogflow
 
 
 @agent.handle(intent="person.domain")
-def person_sex_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+def person_domain_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     return handlers.person_attribute(conv, "domain")
 
 
 @agent.handle(intent="person.location")
-def person_sex_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+def person_location_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     return handlers.person_attribute(conv, "location")
 
 
@@ -89,15 +89,15 @@ def person_hpi_handler(conv: V2beta1DialogflowConversation) -> V2beta1Dialogflow
 
 
 @agent.handle(intent="dataset.more_info")
-def person_sex_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+def dataset_more_info_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     return handlers.dataset_more_info(conv)
 
 
 @agent.handle(intent="dataset.example")
-def person_sex_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+def dataset_example_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     return handlers.dataset_example(conv)
 
 
 @agent.handle(intent="agent.skills")
-def person_sex_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+def agent_skills_handler(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     return handlers.agent_skills(conv)
