@@ -84,7 +84,7 @@ def location_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowCon
         name = person.full_name.item()
         occupation = person.occupation.item()
         person_id = person.person_id.item()
-        conv.contexts.set('person_ctx', lifespan_count=6, person_id=person_id)
+        conv.contexts.set('person_ctx', lifespan_count=4, person_id=person_id)
         conv.ask(render_template("location_search", count=count, name=name, occupation=occupation))
         conv.google.ask(render_template("location_search", count=count, name=name, occupation=occupation))
     else:
@@ -100,7 +100,7 @@ def domain_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConve
     person_id = person.person_id.item()
     location = person.country.item()
 
-    conv.contexts.set('person_ctx', lifespan_count=6, person_id=person_id)
+    conv.contexts.set('person_ctx', lifespan_count=4, person_id=person_id)
     print(conv)
 
     conv.ask(render_template("domain_search", count=count, name=name, location=location, occupation=occupation))
@@ -147,7 +147,7 @@ def person_birth_year(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowC
         person = controllers.get_person_by_name(full_name)
         if person is not None:
             person_id = person.person_id.item()
-            conv.contexts.set('person_ctx', lifespan_count=5, person_id=person_id)
+            conv.contexts.set('person_ctx', lifespan_count=4, person_id=person_id)
         else:  # don't have this person's information in the dataset
             conv.tell(f"I am sorry, but I don't know who is {full_name}. "
                       "Are you interested in others?")
@@ -179,19 +179,19 @@ def name_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConvers
     # get person name from user response.
     full_name = conv.parameters.get('person_full_name')
     person = controllers.get_person_by_name(full_name)
-    if person is not None: # person exists in the dataset
+    if person is not None:  # person exists in the dataset
         person_id = person.person_id.item()
-        conv.contexts.set('person_ctx', lifespan_count=5, person_id=person_id)
-        if conv.contexts.has('birth_year_person_name_ctx'): 
+        conv.contexts.set('person_ctx', lifespan_count=4, person_id=person_id)
+        if conv.contexts.has('birth_year_person_name_ctx'):
             # user trying to ask about someone's birth_year
             response = controllers.construct_person_attribute_response('birth_year', person)
             conv.tell(response)
-        else: # only a general query about a person
+        else:  # only a general query about a person
             response = controllers.construct_person_attribute_response('general_query', person)
             conv.ask(response)
-    else: # don't have this person's information in the dataset
+    else:  # don't have this person's information in the dataset
         conv.tell(f"I am sorry, but I don't know who is {full_name}. "
-                    "Are you interested in others?")
+                  "Are you interested in others?")
     return conv
 
 
@@ -220,7 +220,7 @@ def person_attribute(conv: V2beta1DialogflowConversation, attribute) -> V2beta1D
     return conv
 
 
-def agent_skills(conv:V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
+def agent_skills(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     skills = [
         '- to search for a person by their name \n',
         '- about the birth-year or profession of a person \n',
@@ -258,12 +258,16 @@ def dataset_most_famous(conv):
 
     response_beginning = f'The most famous person from {location} is' if location != '' else 'The most famous person is'
     if famous != '' and unknown != '':
-        conv.tell(f"{response_beginning} {most_famous.full_name} with a HPI of {most_famous.historical_popularity_index} and the least famous person is {least_famous.full_name} with a HPI of {least_famous.historical_popularity_index}")
+        conv.tell(
+            f"{response_beginning} {most_famous.full_name} with a HPI of {most_famous.historical_popularity_index} and the least famous person is {least_famous.full_name} with a HPI of {least_famous.historical_popularity_index}")
     elif famous != '':
-        conv.tell(f"{response_beginning} {most_famous.full_name} with a HPI of {most_famous.historical_popularity_index} ")
+        conv.tell(
+            f"{response_beginning} {most_famous.full_name} with a HPI of {most_famous.historical_popularity_index} ")
+        conv.contexts.set('person_ctx', lifespan_count=4, person_id=most_famous.person_id.item())
     elif unknown != '':
         conv.tell(
             f"{response_beginning} {least_famous.full_name} with a HPI of {least_famous.historical_popularity_index} ")
+        conv.contexts.set('person_ctx', lifespan_count=4, person_id=least_famous.person_id.item())
     else:
         conv.tell("Sorry I didn't get that. Could you rephrase?")
     return conv
