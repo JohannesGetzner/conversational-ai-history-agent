@@ -126,7 +126,7 @@ def construct_person_attribute_response(attribute, person):
     elif attribute == 'general_query':
         sex = person.sex.item()
         pronoun = 'him' if sex == 'Male' else 'her'
-        part = f"Yes, I know {pronoun}. What do you want to know about {pronoun}?"
+        part = f"What do you want to know about {pronoun}?"
     else:
         part = person[attribute].item()
     return part

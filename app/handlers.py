@@ -41,7 +41,7 @@ def construct_dataset_summary(conv: V2beta1DialogflowConversation) -> V2beta1Dia
 def dataset_more_info(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConversation:
     yes = conv.parameters.get('yes')
     no = conv.parameters.get('no')
-    if len(yes) != 0:
+    if len(yes) != 0 or (len(yes) == 0 and len(no) == 0):
         df = controllers.read_dataset()
         conv.tell(
             f"The dataset contains {df.shape[0]} entries and {df.shape[1]} columns. The entries are all ordered "
@@ -187,7 +187,8 @@ def name_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConvers
             response = controllers.construct_person_attribute_response('birth_year', person)
             conv.tell(response)
         else:  # only a general query about a person
-            response = controllers.construct_person_attribute_response('general_query', person)
+            response_part = f"{full_name} is a {person.occupation.item()} from {person.country.item()}. "
+            response = response_part + controllers.construct_person_attribute_response('general_query', person)
             conv.ask(response)
     else:  # don't have this person's information in the dataset
         conv.tell(f"I am sorry, but I don't know who is {full_name}. "
@@ -200,7 +201,6 @@ def person_attribute(conv: V2beta1DialogflowConversation, attribute) -> V2beta1D
 
     df = controllers.read_dataset()
     full_name = conv.parameters.get('person_full_name')
-
     if len(full_name) == 0:
         if conv.contexts.has('person_ctx'):
             person = df.loc[df['person_id'] == conv.contexts.get('person_ctx').parameters['person_id']]
