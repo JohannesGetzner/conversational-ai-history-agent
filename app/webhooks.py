@@ -30,7 +30,7 @@ def dataset_features_handler(conv: V2beta1DialogflowConversation) -> V2beta1Dial
     conv.tell(
         "The dataset contains a lot of information about historical figures, such as name, hometown, "
         "birth year and occupation. For example, Aristotle was born in 384 BCE in Greece. He is "
-        "a philosopher in the humanities.")
+        "a philosopher in humanities.")
     return conv
 
 

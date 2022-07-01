@@ -4,13 +4,10 @@
 test_response:
   - This is a test response.
 
-
 dataset_size:
-  - The dataset contains {{num_rows}} people with {{num_columns}} attributes each.
+  - The dataset contains data on {{num_rows}} people with {{num_columns}} attributes each.
   - The dataset has {{num_rows}} rows and {{num_columns}} columns.
   - The dataset has {{num_rows}} rows and {{num_columns}} features.
-  - The size of the dataset is  {{num_rows}} x {{num_columns}}.
-  - The dataset is of size {{num_rows}} x {{num_columns}}.
   - The dataset contains {{num_rows}} observations with {{num_columns}} features.
 
 dataset_summary:

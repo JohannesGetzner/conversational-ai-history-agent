@@ -179,7 +179,7 @@ def name_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConvers
     # get person name from user response.
     full_name = conv.parameters.get('person_full_name')
     person = controllers.get_person_by_name(full_name)
-    if person is not None:  # person exists in the dataset
+    if not person.empty:  # person exists in the dataset
         person_id = person.person_id.item()
         conv.contexts.set('person_ctx', lifespan_count=4, person_id=person_id)
         if conv.contexts.has('birth_year_person_name_ctx'):
@@ -187,11 +187,11 @@ def name_search(conv: V2beta1DialogflowConversation) -> V2beta1DialogflowConvers
             response = controllers.construct_person_attribute_response('birth_year', person)
             conv.tell(response)
         else:  # only a general query about a person
-            response_part = f"{full_name} is a {person.occupation.item()} from {person.country.item()}. "
+            response_part = f"Yes, {full_name} is a {person.occupation.item()} from {person.country.item()}. "
             response = response_part + controllers.construct_person_attribute_response('general_query', person)
             conv.ask(response)
     else:  # don't have this person's information in the dataset
-        conv.tell(f"I am sorry, but I don't know who is {full_name}. "
+        conv.tell(f"I am sorry, but I don't know who {full_name} is. "
                   "Are you interested in others?")
     return conv
 
