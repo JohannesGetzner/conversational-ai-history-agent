@@ -1,6 +1,6 @@
 # Conversational AI Workshop History Agent
 
-## Install the requirements
+## Install the requirements | Python=3.9
 ### Unix/macOS:
 ```commandline
 python3 -m pip install --user virtualenv
