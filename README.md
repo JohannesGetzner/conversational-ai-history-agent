@@ -8,8 +8,7 @@ Technical University of Munich (TUM).
 
 This project aims to showcase how a conversational agent could be used as an interface to explore a dataset. More
 information on the dataset can be found <a href="https://www.nature.com/articles/sdata201575#Abs1">here</a>. The agent
-was built using Google Dialogflow and a Flask backend. For more details about the setup and technological aspects see
-the README file.
+was built using Google Dialogflow and a Flask backend.
 
 ## Install the requirements | Python=3.9
 
@@ -24,7 +23,7 @@ python3 -m pip install -r requirements.txt
 
 ### Demo
 
-To try out the demo, create a new Google Dialogflow project and import the agent.zip file. Locally start ngrok
+To try out the demo, create a new Google Dialogflow project and import the *history-agent.zip* file. Locally start ngrok
 with `ngrok http 8000` to forward the Flask port to the Dialog Agent. The link provided by ngrok once started must be
 entered in the Dialogflow project under the 'Fulfillment/Webhook/Url' tab.
 First run the Flask App and then visit frontend.html file to play around with the demo.
