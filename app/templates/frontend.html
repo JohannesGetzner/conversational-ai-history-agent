@@ -4,13 +4,55 @@
     <meta charset="UTF-8">
     <title>History Agent</title>
 </head>
+<style>
+    body {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 50px;
+        text-align: center;
+    }
+    p{
+        padding-left: 20%;
+        padding-right: 20%;
+    }
+    #agent-indicator{
+        position: absolute;
+        right: 10%;
+        bottom: 20%;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+    #arrow{
+        font-size: 500%;
+    }
+    #try-out{
+        font-size: 200%;
+    }
+</style>
 <body>
+<div id="header">
+    <h1>Welcome to the smartest History Agent out there!</h1>
+    <h2>I have all the answers to your questions about famous historic figures.</h2>
+</div>
+<p>This project aims to showcase how a conversational agent could be used as an interface to explore a dataset. More information on the
+    dataset can be found <a href="https://www.nature.com/articles/sdata201575#Abs1">here</a>. The agent was built using
+    Google Dialogflow and a Flask backend. For more details about the setup and technological aspects see the README
+    file.</p>
+<div id="agent-indicator">
+    <span id="try-out">Try me out!</span>
+    <span id="arrow">&darr;</span>
+</div>
+
 <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+
 <df-messenger
-  intent="WELCOME"
-  chat-title="Master History"
-  agent-id="d9e4002d-a961-4052-b878-ea93608f5d0e"
-  language-code="en"
+        intent="WELCOME"
+        chat-title="history-agent"
+        agent-id="3c82d6dd-cf61-4027-9b8c-04c80df45f84"
+        language-code="en"
 ></df-messenger>
 </body>
 </html>
