@@ -1,18 +1,27 @@
-# Yaml file with response templates for handler functions
+---
+agent_skills: |
+  You may ask me ... 
+  {% for skill in skills %} {{skill}} {% endfor %} 
+  For more ideas simply ask again!
 
-
-test_response:
-  - This is a test response.
+ask_person_info:
+  - Can you tell me who you mean?
+  - Can you tell me the full name of the person you mentioned?
+  - Can you give me more information about the person you have in mind?
 
 dataset_size:
-  - The dataset contains data on {{num_rows}} people with {{num_columns}} attributes each.
-  - The dataset has {{num_rows}} rows and {{num_columns}} columns.
-  - The dataset has {{num_rows}} rows and {{num_columns}} features.
-  - The dataset contains {{num_rows}} observations with {{num_columns}} features.
+  - The data set contains data on {{num_rows}} historical figures with {{num_columns}} attributes each.
+  - The data set has {{num_rows}} rows and {{num_columns}} columns.
+  - The data set has {{num_rows}} observations and {{num_columns}} features.
+  - The data set is of size {{num_rows}} x {num_columns}.
 
 dataset_summary:
-  - The dataset contains information about historical figures. Each person is described by multiple features such as {% for column in columns %} {{column}}{{ ", " if not loop.last else "" }} {% endfor %} and more. An example is {{example}}
-  - The table contains data about historical figures. Here is an example{{ ":" }} {{example}}. Other attributes include {% for column in columns %} {{column}}{{ ", " if not loop.last else "" }} {% endfor %} and more.
+  - The data set contains information about historical figures. Each person is described by multiple features such as {% for column in columns %} {{column}}{{ ", " if not loop.last else "" }} {% endfor %} and more. An example is {{example}}.
+  - The data contains data about historical figures. Here is an example{{ ":" }} {{example}}. Other attributes include {% for column in columns %} {{column}}{{ ", " if not loop.last else "" }} {% endfor %} and more.
+
+dataset_example:
+  - -\ {{full_name}} is a {{occupation}} born in year {{birth_year}} in {{city}}, {{country}}. {{pronouns[0]}} has a HPI of {{hpi}}.
+  - A certain '{{full_name}}' was born {{birth_year}} in {{city}}, {{country}}. {{pronouns[0]}} is a {{occupation}} and with an HPI of {{hpi}} {{pronouns[1]}} is considered {% if 20 <= hpi %} famous {% else %} not so famous{% endif %}.
 
 location_search:
   - Yes, there are {{count}} people from this place. For example {{":"}} {{name}}, a {{occupation}} is from there.
@@ -23,35 +32,25 @@ domain_search:
 birth_year_search:
   - Yes, there are {{count}} people born in {{birth_year_response}}. For example {{":"}} {{name}}.
 
-ask_person_info:
-  - Can you tell me which person you mean?
-  - Can you tell me the full name of the person you mentioned?
-  - Can you give me more information about the person you have in mind?
+person_birth_year:
+  - The birth year of {{full_name}} is {{attribute}}.
 
 person_sex:
-  - The historical figure '{{full_name}}' is {{attribute}}.
+  - The historical figure {{full_name}} is {{attribute}}.
   - The gender of {{full_name}} is {{attribute}}.
 
-person_historical_popularity_index:
+person_hpi:
   - The HPI of {{full_name}} is {{attribute}}.
 
-person_domain:
-  - The historical figures domain is a {{attribute}}.
+person_occupation_domain:
+  - The historical figure's domain is a {{attribute}}.
   - The occupation of {{full_name}} is {{attribute}}.
 
 person_location:
   - The historical figure {{full_name}} is from {{attribute}}.
   - Figure {{full_name}} lives in {{attribute}}.
 
-dataset_example:
-  - Figure '{{full_name}}' is a {{occupation}} in {{domain}} born in year {{birth_year}} in {{city}} in {{country}}. {% if 'Male' == gender %} He {% else %} She {% endif %} has a HPI of {{hpi}}
-
-agent_skills: |
-  Thanks for asking! You can for example ask me ...
-  {% for skill in skills %} {{skill}} {% endfor %}
-  I hope that helps! Ask again if you need more ideas!
-
 person_name:
-  - We were referring to {{name}}.
-  - I think you mean {{name}}.
-  - The name was {{name}}.
+  - We were referring to {{attribute}}.
+  - I think you mean {{attribute}}.
+  - The name was {{attribute}}.
