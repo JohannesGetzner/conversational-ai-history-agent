@@ -27,3 +27,7 @@ To try out the demo, create a new Google Dialogflow project and import the *hist
 with `ngrok http 8000` to forward the Flask port to the Dialog Agent. The link provided by ngrok once started must be
 entered in the Dialogflow project under the 'Fulfillment/Webhook/Url' tab.
 First run the Flask App and then visit frontend.html file to play around with the demo.
+
+### Screenshots
+<img alt="screenshot1" src="./screenshots/Screenshot%20from%202022-11-05%2011-02-09.png">
+<img alt="screenshot2" src="./screenshots/Screenshot%20from%202022-11-05%2011-03-39.png">

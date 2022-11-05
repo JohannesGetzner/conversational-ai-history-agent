@@ -7,7 +7,7 @@ def read_dataset() -> pd.DataFrame:
     reads the data from the csv file and returns dataset
     """
     d = pd.read_excel(
-        f'{os.path.dirname(os.path.abspath(__package__))}/historical_figures_table.xlsx',
+        f'{os.path.dirname(os.path.abspath(__package__))}/data.xlsx',
         header=0,
         index_col=None
     )
